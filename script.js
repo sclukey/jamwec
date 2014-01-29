@@ -1,3 +1,4 @@
+
 Array.prototype.humanSort = function() {
 	return this.sort(function(a, b) {
 		aa = a.split(/(\d+)/);
@@ -610,7 +611,14 @@ function updateStatus(force) {
 				$("#controls_play_pause span").removeClass('ui-icon-pause');
 				$("#controls_play_pause span").addClass('ui-icon-play');
 			}
-			$("#controls_vol_slider_inner").slider('value', data.volume);
+			if (data.volume != -1) {
+				$("#controls_vol_slider_inner").slider('value', data.volume);
+				if (!$("#controls_vol_slider_inner").parent().is(':visible')) {
+					$("#controls_vol_slider_inner").parent().show();
+				}
+			} else if ($("#controls_vol_slider_inner").parent().is(':visible')) {
+				$("#controls_vol_slider_inner").parent().hide();
+			}
 		});
 		$.ajax({
 			url: 'query.php',
