@@ -54,7 +54,7 @@ foreach(preg_split("/((\r?\n)|(\r\n?))/", $_POST['c']) as $command){
 		$aa = parseResult($r['data']);
 		$r = $mpd->query('listallinfo');
 		$a = parseSongResult($r['data']);
-		file_put_contents('/home/sclukey/web-home/my_music/db/' . $aa['db_update'] . '.json', json_encode($a));
+		file_put_contents('db/' . $aa['db_update'] . '.json', json_encode($a));
 	} else {
 		$r = $mpd->query($command);
 		$a = parseResult($r['data']);
