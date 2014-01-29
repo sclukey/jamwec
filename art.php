@@ -24,10 +24,12 @@ if ($debug) echo 'Artist Directory: ' . $artist_dir . '<br>';
 
 $artist_url = '';
 
+$supported_types = '{jpeg,jpg,png}';
+
 if ($type == 'artist') {
-	$images = glob($artist_dir . '/*.jpeg');
+	$images = glob($artist_dir . '/*.' . $supported_types, GLOB_BRACE);
 } else {
-	$images = glob($dir . '/*.jpeg');
+	$images = glob($dir . '/*.' . $supported_types, GLOB_BRACE);
 }
 
 if (count($images) == 0) {
@@ -133,9 +135,9 @@ if (count($images) == 0) {
 	}
 	
 	if ($type == 'artist') {
-		$images = glob($artist_dir . '/*.jpeg');
+		$images = glob($artist_dir . '/*.' . $supported_types, GLOB_BRACE);
 	} else {
-		$images = glob($dir . '/*.jpeg');
+		$images = glob($dir . '/*.' . $supported_types, GLOB_BRACE);
 	}
 }
 
@@ -145,7 +147,7 @@ if (count($images) > 0) {
 	if ($debug) echo "<br>";
 	if (isset($_args['width'])) {
 		foreach ($images as $image) {
-			$dim = basename($image, '.jpeg');
+			$dim = basename($image);
 			$this_diff = $dim - $_args['width'];
 			if ($this_diff == 0) {
 				$match = $image;
