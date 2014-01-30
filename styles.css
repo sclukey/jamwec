@@ -7,31 +7,26 @@ body {
 	background-color: #EEE;
 }
 
-#playing {
-	width: 33%;
+#main {
 	position: fixed;
-	bottom: 0;
-	top: 5px;
-	right: 5px;
-}
-
-#playlist {
-	position: absolute;
-	height: auto;
+	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	top: 160px;
+	padding: 5px;
+	padding-bottom: 0;
+}
+
+#playing {
+	width: 33%;
+	float: right;
+	height: 100%;
 	overflow-y: auto;
 }
 
 #library-holder {
-	position: fixed;
-	left: 5px;
-	top: 5px;
-	bottom: 0;
-	height: 100;;
-	display: table-cell;
+	float: left;
+	height: 100%;
 	width: 66%;
 	overflow-y: auto;
 	overflow-x: hidden;
