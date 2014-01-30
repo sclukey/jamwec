@@ -3,10 +3,6 @@ body {
 	height: 100%;
 }
 
-#playing .drop-hover #playlist {
-	background-color: #EEE;
-}
-
 #main {
 	position: fixed;
 	top: 0;

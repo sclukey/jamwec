@@ -44,8 +44,8 @@ $(function() {
 	});
 
 	$("#playing").droppable({
-		activeClass: "",
-		hoverClass: "drop-hover",
+		activeClass: "ui-state-active",
+		hoverClass: "ui-state-highlight",
 		drop: function( event, ui ) {
 			// Get the type of drop
 			var type = '';
