@@ -368,6 +368,7 @@ function showArtists() {
 			helper: "clone",
 			distance: 20,
 			start: function(event, ui) {
+				ui.helper.width($(this).width());
 				$(this).addClass('noclick');
 			}
 		});
@@ -377,7 +378,9 @@ function showArtists() {
 			scroll: false,
 			zIndex: 100,
 			helper: "clone",
+			distance: 20,
 			start: function(event, ui) {
+				ui.helper.width($(this).width());
 				$(this).addClass('noclick');
 			}
 		});
@@ -481,8 +484,8 @@ function showAlbums() {
 			zIndex: 1000,
 			helper: "clone",
 			distance: 20,
-			distance: 20,
 			start: function(event, ui) {
+				ui.helper.width($(this).width());
 				$(this).addClass('noclick');
 			}
 		});
@@ -492,7 +495,9 @@ function showAlbums() {
 			scroll: false,
 			zIndex: 100,
 			helper: "clone",
+			distance: 20,
 			start: function(event, ui) {
+				ui.helper.width($(this).width());
 				$(this).addClass('noclick');
 			}
 		});
