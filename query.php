@@ -65,7 +65,7 @@ foreach(preg_split("/((\r?\n)|(\r\n?))/", $_POST['c']) as $command){
 		$artists = array();
 
 		for ($i=0; $i<count($songs);$i++) {
-			if (!isset($songs[$i]['AlbumArtist']) || !isset($songs[$i]['Artist'])) continue;
+			if (!isset($songs[$i]['AlbumArtist']) && !isset($songs[$i]['Artist'])) continue;
 			$n_artist = isset($songs[$i]['AlbumArtist']) ? $songs[$i]['AlbumArtist'] : $songs[$i]['Artist'];
 			$t_artist = strtolower($n_artist);
 			if (!isset($artists[$t_artist])) {
@@ -110,6 +110,7 @@ foreach(preg_split("/((\r?\n)|(\r\n?))/", $_POST['c']) as $command){
 	}
 }
 
+header('Content-Type: application/json');
 echo json_encode($a);
 
 $mpd->disconnect();
