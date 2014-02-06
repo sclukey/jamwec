@@ -28,8 +28,6 @@ function keys(obj) {
 	return keys;
 }
 
-var db;
-
 $(function() {
 	
 	$("#dialog").dialog({
@@ -89,7 +87,7 @@ $(function() {
 				add_albums.push(who);
 			} else {
 				// Add this to the list of songs to add
-				add_songs.push(db[who].file);
+				add_songs.push(songs[who].file);
 			}
 
 			// Add the albums to the songs list
@@ -272,7 +270,9 @@ $(function() {
 	}).done(function(data) {
 		$.getJSON('db/' + data.db_update + '.json', function(data) {
 			console.log('Got the JSON');
-			db = data;
+			songs = data.songs;
+			albums = data.albums;
+			artists = data.artists;
 			showLibrary();
 		}).fail(function(data) {
 			console.log('Creating the DB');
@@ -283,51 +283,26 @@ $(function() {
 				type: 'POST',
 			}).done(function(data) {
 				console.log('Got the database from the server');
-				db = data;
+				songs = data.songs;
+				albums = data.albums;
+				artists = data.artists;
 				showLibrary();
+			}).fail(function(data) {
+				$('#dialog').text(data.responseJSON.message);
+				$('#dialog').dialog('option', 'title', data.responseJSON.title);
+				$('#dialog').dialog('open');
 			});
 		});
 	});
 });
 
 var active_album = undefined;
+var songs;
 var albums;
 var artists;
 var view_by = 'albums';
 
 function showLibrary() {
-	if (albums == null || artists == null) {
-		albums = {};
-		artists = {};
-		for (var i=0; i<db.length;i++) {
-			var n_artist = db[i].AlbumArtist ? db[i].AlbumArtist : db[i].Artist;
-			if (n_artist === undefined) continue;
-			t_artist = n_artist.toLowerCase();
-			if (!(t_artist in artists)) {
-				artists[t_artist] = {
-					name: n_artist,
-					albums: []
-				};
-			}
-			var l_album = 'unknown - ' + t_artist;
-			if (db[i].Album !== undefined) {
-				l_album = db[i].Album.toLowerCase();
-			}
-			if ($.inArray(l_album, artists[t_artist].albums) < 0) {
-				artists[t_artist].albums.push(l_album);
-			}
-			if (!(l_album in albums)) {
-				albums[l_album] = {
-					name: db[i].Album ? db[i].Album : 'Unknown',
-					artist: n_artist,
-					songs: {}
-				};
-			}
-			albums[l_album].songs[parseInt(db[i].Track)] = {Title: db[i].Title, file: db[i].file, idx: i};
-		}
-	}
-
-
 	if (view_by == 'albums') {
 		return showAlbums();
 	} else if (view_by == 'artists') {
