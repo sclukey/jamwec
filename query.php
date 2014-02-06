@@ -88,11 +88,14 @@ foreach(preg_split("/((\r?\n)|(\r\n?))/", $_POST['c']) as $command){
 					'songs' => array()
 				);
 			}
-			$albums[$l_album]['songs'][$songs[$i]['Track']] = array(
-				'Title' => $songs[$i]['Title'],
-				'file' => $songs[$i]['file'],
-				'idx' => $i
-			);
+			if (isset($songs[$i]) && isset($songs[$i]['Title']) && isset($songs[$i]['file'])) {
+				array_push($albums[$l_album]['songs'], array(
+					'Title' => $songs[$i]['Title'],
+					'Track' => isset($songs[$i]['Track']) ? $songs[$i]['Track'] : -1,
+					'file' => $songs[$i]['file'],
+					'idx' => $i
+				));
+			}
 		}
 
 		$a = array(
