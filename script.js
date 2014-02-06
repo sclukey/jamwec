@@ -410,9 +410,9 @@ function albumHTML(id, hide) {
 
 	r += '</div><div class="foldout"' + (hide ? ' style="display: none;"' : '') + '><ul>';
 
-	var s = keys(albums[id].songs).sort(function(a,b){return parseInt(a.Track)-parseInt(b.Track)});
+	var s = albums[id].songs.sort(function(a,b){return parseInt(a.Track)-parseInt(b.Track)});
 	for (var j=0;j<s.length;j++) {
-		r += '<li>' + ((albums[id].songs[[j]].Track == -1) ? '' : parseInt(albums[id].songs[s[j]].Track) + '. ') + '<a class="song" id="song-' + albums[id].songs[s[j]].idx + '" href="javascript:;">' + albums[id].songs[s[j]].Title + '</a></li>';
+		r += '<li>' + ((s[j].Track == -1) ? '' : parseInt(s[j].Track) + '. ') + '<a class="song" id="song-' + s[j].idx + '" href="javascript:;">' + s[j].Title + '</a></li>';
 	}
 
 	r += '</ul></div>';
