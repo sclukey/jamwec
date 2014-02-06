@@ -13,6 +13,10 @@ body {
 	padding-bottom: 0;
 }
 
+.ui-dialog {
+    background-size: 100% 100%;
+}
+
 #playing {
 	width: 33%;
 	float: right;

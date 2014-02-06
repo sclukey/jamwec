@@ -31,6 +31,20 @@ function keys(obj) {
 var db;
 
 $(function() {
+	
+	$("#dialog").dialog({
+		autoOpen: false,
+		modal: true,
+		buttons: {
+			"Refresh": function() {
+				location.reload();
+			},
+			"Ignore": function() {
+				$(this).dialog("close");
+			}
+		}
+	});
+	
 	$( "#radio" ).buttonset();
 
 	view_by = $("input:radio[name=radio]:checked").val();

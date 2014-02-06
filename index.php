@@ -19,6 +19,7 @@
 	<script src="script.js"></script>
 </head>
 <body>
+	<div id="dialog" title=""></div>
 	<div id="main">
 		<div id="library-holder">
 			<div id="library_options">

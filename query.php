@@ -50,11 +50,18 @@ foreach(preg_split("/((\r?\n)|(\r\n?))/", $_POST['c']) as $command){
 			$a[$i] = parseResult($t['data']);
 		}
 	} else if (!strcmp(trim($command), 'makejsondb')) {
+		if (!file_exists('db') || !is_dir('db')) {
+			if (!@mkdir('db')) {
+				error('Error', 'Database folder (\'db/\') does not exist and cannot be created.');
+			}
+		}
 		$r = $mpd->query('stats');
 		$aa = parseResult($r['data']);
 		$r = $mpd->query('listallinfo');
 		$a = parseSongResult($r['data']);
-		file_put_contents('db/' . $aa['db_update'] . '.json', json_encode($a));
+		if (@file_put_contents('db/' . $aa['db_update'] . '.json', json_encode($a)) === false) {
+			error('Error', 'Database folder does is not writable. Check folder permissions.');
+		}
 	} else {
 		$r = $mpd->query($command);
 		$a = parseResult($r['data']);
@@ -64,5 +71,12 @@ foreach(preg_split("/((\r?\n)|(\r\n?))/", $_POST['c']) as $command){
 echo json_encode($a);
 
 $mpd->disconnect();
+
+function error($title, $message) {
+	header('HTTP/1.1 500 Jamwec PHP Error');
+	header('Content-Type: application/json');
+	die(json_encode(array('title' => $title, 'message' => $message)));
+}
+
 ?>
 
