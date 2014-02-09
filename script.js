@@ -1,21 +1,33 @@
+function foldoutAction() {
+	if ($(this).hasClass('noclick')) {
+		$(this).removeClass('noclick');
+	}
+	var h = $(this).next('.foldout').is(':visible');
+	if (active_album) {
+		active_album.removeClass('ui-state-active');
+		active_album.next('.foldout').animate({height: 'hide'});
+	}
+	if (h) {
+		$(this).removeClass('ui-state-active');
+		$(this).next('.foldout').animate({height: 'hide'});
+	} else {
+		$(this).addClass('ui-state-active');
+		$(this).next('.foldout').animate({height: 'show'});
+		active_album = $(this);
+	}
+	return false;
+}
 
-Array.prototype.humanSort = function() {
-	return this.sort(function(a, b) {
-		aa = a.split(/(\d+)/);
-		bb = b.split(/(\d+)/);
-		for(var x = 0; x < Math.max(aa.length, bb.length); x++) {
-			if(aa[x] != bb[x]) {
-				var cmp1 = (isNaN(parseInt(aa[x],10)))? aa[x].toLowerCase() : parseInt(aa[x],10);
-				var cmp2 = (isNaN(parseInt(bb[x],10)))? bb[x].toLowerCase() : parseInt(bb[x],10);
-				if(cmp1 == undefined || cmp2 == undefined) {
-					return aa.length - bb.length;
-				} else {
-					return (cmp1 < cmp2) ? -1 : 1;
-				}
-			}
-		}
-		return 0;
-	});
+var draggableOptions = {
+	revert: true,
+	scroll: false,
+	zIndex: 1000,
+	helper: "clone",
+	distance: 20,
+	start: function(event, ui) {
+		ui.helper.width($(this).width());
+		$(this).addClass('noclick');
+	}
 }
 
 function keys(obj) {
@@ -36,81 +48,15 @@ $.widget("custom.catcomplete", $.ui.autocomplete, {
 		
 		if (type == 'album') {
 			$(albumHTML(id)).appendTo('#library_search')
-			.draggable({
-				revert: true,
-				scroll: false,
-				zIndex: 1000,
-				helper: "clone",
-				distance: 20,
-				start: function(event, ui) {
-					ui.helper.width($(this).width());
-					$(this).addClass('noclick');
-				}
-			}).click(function() {
-				if ($(this).hasClass('noclick')) {
-					$(this).removeClass('noclick');
-				}
-				var h = $(this).next('.foldout').is(':visible');
-				if (active_album) {
-					active_album.removeClass('ui-state-active');
-					active_album.next('.foldout').animate({height: 'hide'});
-				}
-				if (h) {
-					$(this).removeClass('ui-state-active');
-					$(this).next('.foldout').animate({height: 'hide'});
-				} else {
-					$(this).addClass('ui-state-active');
-					$(this).next('.foldout').animate({height: 'show'});
-					active_album = $(this);
-				}
-				return false;
-			});
+			.draggable(draggableOptions).click(foldoutAction);
 		} else if (type == 'artist') {
 			$(artistHTML(id)).appendTo('#library_search')
-			.draggable({
-				revert: true,
-				scroll: false,
-				zIndex: 1000,
-				helper: "clone",
-				distance: 20,
-				start: function(event, ui) {
-					ui.helper.width($(this).width());
-					$(this).addClass('noclick');
-				}
-			}).click(function() {
-				if ($(this).hasClass('noclick')) {
-					$(this).removeClass('noclick');
-				}
-				var h = $(this).next('.foldout').is(':visible');
-				if (active_album) {
-					active_album.removeClass('ui-state-active');
-					active_album.next('.foldout').animate({height: 'hide'});
-				}
-				if (h) {
-					$(this).removeClass('ui-state-active');
-					$(this).next('.foldout').animate({height: 'hide'});
-				} else {
-					$(this).addClass('ui-state-active');
-					$(this).next('.foldout').animate({height: 'show'});
-					active_album = $(this);
-				}
-				return false;
-			});
+			.draggable(draggableOptions).click(foldoutAction);
 		} else {
 			$('<div class="ui-corner-all ui-widget-content artist ui-draggable" data-id="' + type + '-' + id + '"></div>')
 			.html('<h3>' + item.label + '</h3><h4>' + songs[id].Album + '</h4><h4>' + songs[id].Artist + '</h4>')
 			.appendTo('#library_search')
-			.draggable({
-				revert: true,
-				scroll: false,
-				zIndex: 1000,
-				helper: "clone",
-				distance: 20,
-				start: function(event, ui) {
-					ui.helper.width($(this).width());
-					$(this).addClass('noclick');
-				}
-			});
+			.draggable(draggableOptions);
 		}
 		
 		
@@ -480,49 +426,11 @@ function showArtists() {
 		}
 		$('#library_artists').html(new_html);
 
-		$('.artist').click(function() {
-			if ($(this).hasClass('noclick')) {
-				$(this).removeClass('noclick');
-			}
-			var h = $(this).next('.foldout').is(':visible');
-			if (active_album) {
-				active_album.removeClass('ui-state-active');
-				active_album.next('.foldout').animate({height: 'hide'});
-			}
-			if (h) {
-				$(this).removeClass('ui-state-active');
-				$(this).next('.foldout').animate({height: 'hide'});
-			} else {
-				$(this).addClass('ui-state-active');
-				$(this).next('.foldout').animate({height: 'show'});
-				active_album = $(this);
-			}
-			return false;
-		});
+		$('.artist').click(foldoutAction);
 
-		$('#library_artists .album,#library_artists .artist').draggable({
-			revert: true,
-			scroll: false,
-			zIndex: 1000,
-			helper: "clone",
-			distance: 20,
-			start: function(event, ui) {
-				ui.helper.width($(this).width());
-				$(this).addClass('noclick');
-			}
-		});
+		$('#library_artists .album,#library_artists .artist').draggable(draggableOptions);
 
-		$('#library_artists .song').draggable({
-			revert: true,
-			scroll: false,
-			zIndex: 100,
-			helper: "clone",
-			distance: 20,
-			start: function(event, ui) {
-				ui.helper.width($(this).width());
-				$(this).addClass('noclick');
-			}
-		});
+		$('#library_artists .song').draggable(draggableOptions);
 
 		loadImages('.artist');
 	}
@@ -542,7 +450,10 @@ function showArtists() {
 }
 
 function artistHTML(id) {
-	var r = '<div class="ui-corner-all ui-widget-content artist" data-id="artist-' + id + '"><img src="images/unknown.png" data-src="art.php?width=100&type=artist&album=' + encodeURIComponent(artists[id].albums[0]) + '&artist=' + encodeURIComponent(id) + '"><h3>' + artists[id].name + '</h3><h4>' + artists[id].albums.length + ' ' + (artists[id].albums.length == 1 ? 'Album' : 'Albums') + '</h4>';
+	var r = '<div class="ui-corner-all ui-widget-content artist" data-id="artist-' + id + '">\
+		<img src="images/unknown.png" data-src="art.php?width=100&type=artist&album=' + encodeURIComponent(artists[id].albums[0]) + '&artist=' + encodeURIComponent(id) + '">\
+		<h3>' + artists[id].name + '</h3>\
+		<h4>' + artists[id].albums.length + ' ' + (artists[id].albums.length == 1 ? 'Album' : 'Albums') + '</h4>';
 
 
 	r += '</div><div class="foldout" style="display: none;">';
@@ -560,14 +471,18 @@ function artistHTML(id) {
 
 function albumHTML(id, hide) {
 	if (hide === undefined) hide = true;
-	var r = '<div class="ui-corner-all ui-widget-content album" data-id="album-' + id + '"><img src="images/unknown.png" width="100" data-src="art.php?width=100&album=' + encodeURIComponent(id) + '&artist=' + encodeURIComponent(albums[id].artist) + '"><h3>' + albums[id].name + '</h3><h4>' + albums[id].artist + '</h4>';
+	var r = '<div class="ui-corner-all ui-widget-content album" data-id="album-' + id + '">\
+		<img src="images/unknown.png" width="100" data-src="art.php?width=100&album=' + encodeURIComponent(id) + '&artist=' + encodeURIComponent(albums[id].artist) + '">\
+		<h3>' + albums[id].name + '</h3>\
+		<h4>' + albums[id].artist + '</h4>';
 
 
 	r += '</div><div class="foldout"' + (hide ? ' style="display: none;"' : '') + '><ul>';
 
 	var s = albums[id].songs.sort(function(a,b){return parseInt(a.Track)-parseInt(b.Track)});
 	for (var j=0;j<s.length;j++) {
-		r += '<li>' + ((s[j].Track == -1) ? '' : parseInt(s[j].Track) + '. ') + '<a class="song" data-id="song-' + s[j].idx + '" href="javascript:;">' + s[j].Title + '</a></li>';
+		r += '<li>' + ((s[j].Track == -1) ? '' : parseInt(s[j].Track) + '. ') +
+			'<a class="song" data-id="song-' + s[j].idx + '" href="javascript:;">' + s[j].Title + '</a></li>';
 	}
 
 	r += '</ul></div>';
@@ -602,49 +517,11 @@ function showAlbums() {
 
 		$("#library_albums").html(new_html);
 
-		$('#library_albums .album').click(function() {
-			if ($(this).hasClass('noclick')) {
-				$(this).removeClass('noclick');
-			}
-			var h = $(this).next('.foldout').is(':visible');
-			if (active_album) {
-				active_album.removeClass('ui-state-active');
-				active_album.next('.foldout').animate({height: 'hide'});
-			}
-			if (h) {
-				$(this).removeClass('ui-state-active');
-				$(this).next('.foldout').animate({height: 'hide'});
-			} else {
-				$(this).addClass('ui-state-active');
-				$(this).next('.foldout').animate({height: 'show'});
-				active_album = $(this);
-			}
-			return false;
-		});
+		$('#library_albums .album').click(foldoutAction);
 
-		$('#library_albums .album').draggable({
-			revert: true,
-			scroll: false,
-			zIndex: 1000,
-			helper: "clone",
-			distance: 20,
-			start: function(event, ui) {
-				ui.helper.width($(this).width());
-				$(this).addClass('noclick');
-			}
-		});
+		$('#library_albums .album').draggable(draggableOptions);
 
-		$('#library_albums .song').draggable({
-			revert: true,
-			scroll: false,
-			zIndex: 100,
-			helper: "clone",
-			distance: 20,
-			start: function(event, ui) {
-				ui.helper.width($(this).width());
-				$(this).addClass('noclick');
-			}
-		});
+		$('#library_albums .song').draggable(draggableOptions);
 
 
 		console.profileEnd();
@@ -814,17 +691,27 @@ function regroupPlaylist() {
 	var new_html = '</ul></div></div>';
 	for (i=playlist.length-1; i>=0; i--) {
 		if (playlist[i].Album != currentAlbum && !first) {
-			new_html = '</ul></div></div><div class="group"><div class="head"><h3>' + currentAlbum + '</h3><h4>' + playlist[i+1].Artist + '</h4><br style="clear: both;"></div><div><ul class="subplaylist" id="subplaylist' + i + '">' + new_html;
+			new_html = '</ul></div></div><div class="group"><div class="head">\
+				<h3>' + currentAlbum + '</h3>\
+				<h4>' + playlist[i+1].Artist + '</h4>\
+				<br style="clear: both;"></div><div>\
+				<ul class="subplaylist" id="subplaylist' + i + '">' + new_html;
 			sortable_string += "#subplaylist" + i + ", ";
 		}
 		var trackNum = parseInt(playlist[i].Track);
 		if (trackNum < 10) trackNum = "0" + trackNum;
-		new_html = '<li name="' + i + '" track-id="' + playlist[i].Id + '">' + trackNum + '. <a href="javascript:playTrack(\'' + i + '\');">' + playlist[i].Title + '</a></li>' + new_html;
+		new_html = '<li name="' + i + '" track-id="' + playlist[i].Id + '">' + trackNum
+			+ '. <a href="javascript:playTrack(\'' + i + '\');">' + playlist[i].Title + '</a></li>' + new_html;
 		currentAlbum = playlist[i].Album;
 		first = false;
 	}
 	if (playlist.length > 0)
-		new_html = '<div class="group"><div class="head"><h3>' + currentAlbum + '</h3><h4>' + playlist[i+1].Artist + '</h4><br style="clear: both;"></div><div><ul class="subplaylist" id="subplaylist' + i + '">' + new_html;
+		new_html = '<div class="group">\
+			<div class="head">\
+			<h3>' + currentAlbum + '</h3>\
+			<h4>' + playlist[i+1].Artist + '</h4>\
+			<br style="clear: both;"></div><div>\
+			<ul class="subplaylist" id="subplaylist' + i + '">' + new_html;
 	sortable_string += "#subplaylist" + i;
 
 	$("#playlist").html(new_html);
@@ -848,11 +735,8 @@ function regroupPlaylist() {
 		else
 			$(this).addClass('ui-state-active');
 	});
-	//$('#playlist .group h3').next().toggle();
 	$('#playlist .group .head').next().addClass('ui-widget-default ui-corner-bottom');
 	$('#playlist .group .head').addClass('ui-widget-content ui-corner-all');
-	//$('#playlist .group h3').addClass('ui-accordion-header ui-helper-reset ui-state-default ui-accordion-icons ui-accordion-header-active ui-state-active ui-corner-top');
-	//$('#playlist .group h3').next().addClass('ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active');
 
 	$('#playlist').sortable({
 		axis: "y",
