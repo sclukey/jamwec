@@ -22,15 +22,21 @@
 	<div id="dialog" title=""></div>
 	<div id="main">
 		<div id="library-holder">
+			<div id="library_filter" class="ui-widget">
+				<input id="search" autocomplete="off">
+			</div>
 			<div id="library_options">
 				<div id="radio">
 					<input type="radio" id="radio_artists" name="radio" value="artists" checked="checked"><label for="radio_artists">Artists</label>
 					<input type="radio" id="radio_albums" name="radio" value="albums"><label for="radio_albums">Albums</label>
+					<input type="radio" id="radio_search" name="radio" value="search"><label for="radio_search">Search</label>
 					<!--<input type="radio" id="radio_songs" name="radio" value="songs"><label for="radio_songs">Songs</label>-->
 				</div>
 			</div>
+			<br class="clearboth">
 			<div id="library_artists" class="ui-widget libraries" style="display: none;"></div>
 			<div id="library_albums" class="ui-widget libraries" style="display: none;"></div>
+			<div id="library_search" class="ui-widget libraries" style="display: none;"></div>
 		</div>
 		<div id="playing">
 			<div id="status">

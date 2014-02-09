@@ -13,6 +13,20 @@ body {
 	padding-bottom: 0;
 }
 
+#library_search h4 {
+	margin: 15px 0 0 0;
+	padding: 0;
+}
+
+#library_filter {
+    float: right;
+    margin-right: 1.5%;
+}
+
+.clearboth {
+    clear: both;
+}
+
 .ui-dialog {
     background-size: 100% 100%;
 }
@@ -128,7 +142,7 @@ body {
 }
 
 #library_options {
-	text-align: center;
+	float: left;
 }
 
 #status #current_song {
